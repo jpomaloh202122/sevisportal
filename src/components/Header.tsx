@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { Bell } from 'lucide-react';
 
 export default function Header() {
@@ -6,7 +7,7 @@ export default function Header() {
     <header className="bg-black shadow-sm border-b border-yellow-500">
       <div className="max-w-[105rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-24">
-          <div className="flex items-center space-x-4">
+          <Link href="/" className="flex items-center space-x-4 hover:opacity-80 transition-opacity">
             <div className="bg-transparent p-2 rounded-lg">
               <Image 
                 src="/images/newlogo.png" 
@@ -20,7 +21,7 @@ export default function Header() {
             <div className="flex items-center">
               <h1 className="text-2xl font-bold text-yellow-400">SEVIS PORTAL</h1>
             </div>
-          </div>
+          </Link>
           <div className="flex items-center space-x-4">
             <button className="p-2 text-yellow-300 hover:text-yellow-100">
               <Bell className="w-5 h-5" />
@@ -33,4 +34,4 @@ export default function Header() {
       </div>
     </header>
   );
-} 
+}
