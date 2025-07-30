@@ -26,7 +26,7 @@ export default function GovernmentPortal() {
       title: "Document Services",
       description: "Apply for certificates, licenses, and official documents",
       color: "bg-blue-500",
-      href: "#"
+      href: "/documents"
     },
     {
       icon: <Users className="w-8 h-8" />,
@@ -47,7 +47,7 @@ export default function GovernmentPortal() {
       title: "Property Services",
       description: "Property registration, taxes, and housing assistance",
       color: "bg-orange-500",
-      href: "#"
+      href: "property"
     },
     {
       icon: <GraduationCap className="w-8 h-8" />,
