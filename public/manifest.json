@@ -1,0 +1,22 @@
+{
+  "name": "Government Portal",
+  "short_name": "GovPortal",
+  "description": "Official E-Government Services Portal",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#F59E0B",
+  "icons": [
+    {
+      "src": "/images/newlogo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+        {
+      "src": "/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ]
+} 
