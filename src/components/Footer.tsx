@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <h5 className="text-lg font-semibold mb-4 text-yellow-400">SEVIS Portal</h5>
+            <h5 className="text-lg font-semibold mb-4 text-yellow-400">Government Portal</h5>
             <p className="text-gray-400">
               Providing secure and efficient government services to citizens.
             </p>
@@ -12,10 +12,10 @@ export default function Footer() {
           <div>
             <h6 className="font-semibold mb-4 text-yellow-400">Services</h6>
             <ul className="space-y-2 text-gray-400">
-              <li><a href="/education" className="hover:text-yellow-300">Education Services</a></li>
-              <li><a href="/health" className="hover:text-yellow-300">Healthcare Services</a></li>
-              <li><a href="/transport" className="hover:text-yellow-300">Transportation Services</a></li>
-              <li><a href="/citizen" className="hover:text-yellow-300">Citizen Services</a></li>
+              <li><a href="#" className="hover:text-yellow-300">Document Services</a></li>
+              <li><a href="#" className="hover:text-yellow-300">Citizen Services</a></li>
+              <li><a href="#" className="hover:text-yellow-300">Business Services</a></li>
+              <li><a href="#" className="hover:text-yellow-300">Emergency Services</a></li>
             </ul>
           </div>
           <div>
@@ -38,7 +38,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 SEVIS Portal. All rights reserved.</p>
+          <p>&copy; 2024 Government Portal. All rights reserved.</p>
         </div>
       </div>
     </footer>

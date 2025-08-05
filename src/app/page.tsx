@@ -1,3 +1,5 @@
+'use client';
+
 import { 
   Building2, 
   FileText, 
@@ -18,8 +20,13 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import UserDashboard from '@/components/UserDashboard';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function GovernmentPortal() {
+  const { isAuthenticated } = useAuth();
   const services = [
     {
       icon: <FileText className="w-8 h-8" />,
@@ -47,7 +54,7 @@ export default function GovernmentPortal() {
       title: "Property Services",
       description: "Property registration, taxes, and housing assistance",
       color: "bg-orange-500",
-      href: "property"
+      href: "/property"
     },
     {
       icon: <GraduationCap className="w-8 h-8" />,
@@ -97,36 +104,7 @@ export default function GovernmentPortal() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-black shadow-sm border-b border-yellow-500">
-        <div className="max-w-[105rem] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-24">
-            <Link href="/" className="flex items-center space-x-4 hover:opacity-80 transition-opacity">
-              <div className="bg-transparent p-2 rounded-lg">
-                <Image 
-                  src="/images/newlogo.png" 
-                  alt="Government Portal Logo"
-                  width={300} 
-                  height={90} 
-                  className="h-12 w-auto"
-                  priority
-                />
-              </div>
-              <div className="flex items-center">
-                <h1 className="text-2xl font-bold text-yellow-400">SEVIS PORTAL</h1>
-              </div>
-            </Link>
-            <div className="flex items-center space-x-4">
-              <button className="p-2 text-yellow-300 hover:text-yellow-100">
-                <Bell className="w-5 h-5" />
-              </button>
-              <button className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
-                Sign In
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-red-600 to-red-800 text-white">
@@ -221,6 +199,9 @@ export default function GovernmentPortal() {
 
           {/* Sidebar */}
           <div className="space-y-6">
+            {/* User Dashboard (if authenticated) */}
+            {isAuthenticated && <UserDashboard />}
+
             {/* Announcements */}
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
               <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
@@ -267,49 +248,9 @@ export default function GovernmentPortal() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-black text-white border-t border-yellow-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <h5 className="text-lg font-semibold mb-4 text-yellow-400">Government Portal</h5>
-              <p className="text-gray-400">
-                Providing secure and efficient government services to citizens.
-              </p>
-            </div>
-            <div>
-              <h6 className="font-semibold mb-4 text-yellow-400">Services</h6>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-yellow-300">Document Services</a></li>
-                <li><a href="#" className="hover:text-yellow-300">Citizen Services</a></li>
-                <li><a href="#" className="hover:text-yellow-300">Business Services</a></li>
-                <li><a href="#" className="hover:text-yellow-300">Emergency Services</a></li>
-              </ul>
-            </div>
-            <div>
-              <h6 className="font-semibold mb-4 text-yellow-400">Resources</h6>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-yellow-300">Forms & Applications</a></li>
-                <li><a href="#" className="hover:text-yellow-300">Laws & Regulations</a></li>
-                <li><a href="#" className="hover:text-yellow-300">Public Records</a></li>
-                <li><a href="#" className="hover:text-yellow-300">News & Updates</a></li>
-              </ul>
-            </div>
-            <div>
-              <h6 className="font-semibold mb-4 text-yellow-400">Support</h6>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-yellow-300">Help Center</a></li>
-                <li><a href="#" className="hover:text-yellow-300">Contact Us</a></li>
-                <li><a href="#" className="hover:text-yellow-300">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-yellow-300">Terms of Service</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Government Portal. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+
+
+      <Footer />
     </div>
   );
 }
