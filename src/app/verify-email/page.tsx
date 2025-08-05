@@ -10,7 +10,7 @@ function VerifyEmailPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { signIn } = useAuth();
-  
+
   const [status, setStatus] = useState<'loading' | 'success' | 'error' | 'expired' | 'used'>('loading');
   const [message, setMessage] = useState('');
   const [user, setUser] = useState<{
@@ -31,42 +31,32 @@ function VerifyEmailPage() {
       setMessage('No verification token provided');
       return;
     }
-
     verifyEmail(token);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const verifyEmail = async (verificationToken: string) => {
     try {
       const response = await fetch('/api/auth/verify-email', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: verificationToken }),
       });
-
       const data = await response.json();
-
       if (response.ok) {
         setStatus('success');
         setMessage(data.message);
         setUser(data.user);
-        
-        // Automatically sign in the user
         if (data.token) {
           await signIn(data.token, data.user);
         }
       } else {
-        if (data.error.includes('expired')) {
-          setStatus('expired');
-        } else if (data.error.includes('already been used')) {
-          setStatus('used');
-        } else {
-          setStatus('error');
-        }
+        if (data.error.includes('expired')) setStatus('expired');
+        else if (data.error.includes('already been used')) setStatus('used');
+        else setStatus('error');
         setMessage(data.error);
       }
-    } catch (error) {
+    } catch {
       setStatus('error');
       setMessage('An error occurred during verification');
     }
@@ -74,25 +64,17 @@ function VerifyEmailPage() {
 
   const resendVerification = async () => {
     if (!user?.email) return;
-    
     setIsResending(true);
     try {
       const response = await fetch('/api/auth/resend-verification', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: user.email }),
       });
-
       const data = await response.json();
-
-      if (response.ok) {
-        setMessage('Verification email sent successfully. Please check your inbox.');
-      } else {
-        setMessage(data.error);
-      }
-    } catch (error) {
+      if (response.ok) setMessage('Verification email sent successfully. Please check your inbox.');
+      else setMessage(data.error);
+    } catch {
       setMessage('Failed to resend verification email');
     } finally {
       setIsResending(false);
@@ -101,27 +83,21 @@ function VerifyEmailPage() {
 
   const getStatusIcon = () => {
     switch (status) {
-      case 'success':
-        return <CheckCircle className="w-16 h-16 text-green-500" />;
+      case 'success': return <CheckCircle className="w-16 h-16 text-green-500" />;
       case 'error':
       case 'expired':
-      case 'used':
-        return <XCircle className="w-16 h-16 text-red-500" />;
-      default:
-        return <Mail className="w-16 h-16 text-blue-500 animate-pulse" />;
+      case 'used': return <XCircle className="w-16 h-16 text-red-500" />;
+      default: return <Mail className="w-16 h-16 text-blue-500 animate-pulse" />;
     }
   };
 
   const getStatusColor = () => {
     switch (status) {
-      case 'success':
-        return 'text-green-600';
+      case 'success': return 'text-green-600';
       case 'error':
       case 'expired':
-      case 'used':
-        return 'text-red-600';
-      default:
-        return 'text-blue-600';
+      case 'used': return 'text-red-600';
+      default: return 'text-blue-600';
     }
   };
 
@@ -131,11 +107,7 @@ function VerifyEmailPage() {
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <div className="text-center">
             {getStatusIcon()}
-            
-            <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-              Email Verification
-            </h2>
-            
+            <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Email Verification</h2>
             <div className="mt-4">
               <p className={`text-lg font-medium ${getStatusColor()}`}>
                 {status === 'loading' && 'Verifying your email...'}
@@ -144,12 +116,8 @@ function VerifyEmailPage() {
                 {status === 'expired' && 'Token Expired'}
                 {status === 'used' && 'Token Already Used'}
               </p>
-              
-              <p className="mt-2 text-sm text-gray-600">
-                {message}
-              </p>
+              <p className="mt-2 text-sm text-gray-600">{message}</p>
             </div>
-
             {status === 'success' && (
               <div className="mt-6">
                 <button
@@ -160,7 +128,6 @@ function VerifyEmailPage() {
                 </button>
               </div>
             )}
-
             {(status === 'error' || status === 'expired' || status === 'used') && (
               <div className="mt-6 space-y-3">
                 <button
@@ -169,7 +136,6 @@ function VerifyEmailPage() {
                 >
                   Go to Sign In
                 </button>
-                
                 {user?.email && (
                   <button
                     onClick={resendVerification}
