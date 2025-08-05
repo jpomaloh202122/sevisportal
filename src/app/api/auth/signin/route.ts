@@ -32,17 +32,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if email is verified
-    if (!user.emailVerified) {
-      return NextResponse.json(
-        { 
-          error: 'Please verify your email address before signing in',
-          requiresVerification: true,
-          email: user.email
-        },
-        { status: 403 }
-      );
-    }
+
 
     // Update last login
     await db.users.updateLastLogin(user.id);
@@ -56,8 +46,6 @@ export async function POST(request: NextRequest) {
       email: user.email,
       name: user.name,
       role: user.role,
-      emailVerified: user.emailVerified,
-      emailVerifiedAt: user.emailVerifiedAt,
       lastLogin: user.lastLogin,
     };
 

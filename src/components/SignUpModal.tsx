@@ -23,7 +23,7 @@ export default function SignUpModal({ isOpen, onClose, onSwitchToSignIn }: SignU
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [showVerificationMessage, setShowVerificationMessage] = useState(false);
+
 
   const { signUp } = useAuth();
 
@@ -39,7 +39,6 @@ export default function SignUpModal({ isOpen, onClose, onSwitchToSignIn }: SignU
     setLoading(true);
     setError('');
     setSuccess('');
-    setShowVerificationMessage(false);
 
     // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
@@ -58,15 +57,7 @@ export default function SignUpModal({ isOpen, onClose, onSwitchToSignIn }: SignU
     const result = await signUp(formData.email, formData.password, formData.name, formData.role);
     
     if (result.success) {
-      setSuccess('Account created successfully! Please check your email to verify your account.');
-      setShowVerificationMessage(true);
-      setFormData({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        role: 'citizen'
-      });
+      onClose();
     } else {
       setError(result.error || 'Sign up failed');
     }
@@ -77,7 +68,6 @@ export default function SignUpModal({ isOpen, onClose, onSwitchToSignIn }: SignU
   const handleClose = () => {
     setError('');
     setSuccess('');
-    setShowVerificationMessage(false);
     onClose();
   };
 
@@ -96,35 +86,7 @@ export default function SignUpModal({ isOpen, onClose, onSwitchToSignIn }: SignU
           </button>
         </div>
 
-        {showVerificationMessage ? (
-          <div className="text-center">
-            <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Check Your Email
-            </h3>
-            <p className="text-gray-600 mb-4">
-              We&apos;ve sent a verification link to <strong>{formData.email}</strong>
-            </p>
-            <p className="text-sm text-gray-500 mb-6">
-              Click the link in your email to verify your account and start using SEVIS Portal.
-            </p>
-            <div className="space-y-3">
-              <button
-                onClick={handleClose}
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Got it
-              </button>
-              <button
-                onClick={onSwitchToSignIn}
-                className="w-full text-blue-600 hover:text-blue-700 font-medium"
-              >
-                Already verified? Sign In
-              </button>
-            </div>
-          </div>
-        ) : (
-          <>
+        <>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
                 <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
@@ -266,8 +228,7 @@ export default function SignUpModal({ isOpen, onClose, onSwitchToSignIn }: SignU
               </p>
             </div>
           </>
-        )}
+        </div>
       </div>
-    </div>
-  );
-} 
+    );
+  } 

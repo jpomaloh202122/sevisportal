@@ -16,8 +16,7 @@ export default function SignInModal({ isOpen, onClose, onSwitchToSignUp }: SignI
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [requiresVerification, setRequiresVerification] = useState(false);
-  const [isResending, setIsResending] = useState(false);
+
 
   const { signIn } = useAuth();
 
@@ -25,7 +24,6 @@ export default function SignInModal({ isOpen, onClose, onSwitchToSignUp }: SignI
     e.preventDefault();
     setLoading(true);
     setError('');
-    setRequiresVerification(false);
 
     const result = await signIn(email, password);
     
@@ -34,44 +32,13 @@ export default function SignInModal({ isOpen, onClose, onSwitchToSignUp }: SignI
       setEmail('');
       setPassword('');
     } else {
-      if (result.requiresVerification) {
-        setRequiresVerification(true);
-        setError('Please verify your email address before signing in');
-      } else {
-        setError(result.error || 'Sign in failed');
-      }
+      setError(result.error || 'Sign in failed');
     }
     
     setLoading(false);
   };
 
-  const handleResendVerification = async () => {
-    if (!email) return;
-    
-    setIsResending(true);
-    try {
-      const response = await fetch('/api/auth/resend-verification', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setError('Verification email sent successfully. Please check your inbox.');
-        setRequiresVerification(false);
-      } else {
-        setError(data.error);
-      }
-    } catch (error) {
-      setError('Failed to resend verification email');
-    } finally {
-      setIsResending(false);
-    }
-  };
 
   if (!isOpen) return null;
 
@@ -92,28 +59,6 @@ export default function SignInModal({ isOpen, onClose, onSwitchToSignUp }: SignI
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
               {error}
-              {requiresVerification && (
-                <div className="mt-3">
-                  <button
-                    type="button"
-                    onClick={handleResendVerification}
-                    disabled={isResending}
-                    className="flex items-center text-sm text-blue-600 hover:text-blue-700 disabled:opacity-50"
-                  >
-                    {isResending ? (
-                      <>
-                        <RefreshCw className="w-4 h-4 mr-1 animate-spin" />
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        <Mail className="w-4 h-4 mr-1" />
-                        Resend verification email
-                      </>
-                    )}
-                  </button>
-                </div>
-              )}
             </div>
           )}
 

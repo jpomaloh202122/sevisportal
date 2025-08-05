@@ -7,8 +7,6 @@ export interface User {
   password: string;
   name: string;
   role: 'citizen' | 'admin' | 'staff';
-  emailVerified: boolean;
-  emailVerifiedAt?: Date;
   createdAt: Date;
   lastLogin?: Date;
 }
@@ -18,19 +16,8 @@ export interface UserResponse {
   email: string;
   name: string;
   role: 'citizen' | 'admin' | 'staff';
-  emailVerified: boolean;
-  emailVerifiedAt?: Date;
   createdAt: Date;
   lastLogin?: Date;
-}
-
-export interface EmailVerificationToken {
-  id: string;
-  userId: string;
-  token: string;
-  expiresAt: Date;
-  createdAt: Date;
-  usedAt?: Date;
 }
 
 export const db = {
@@ -66,8 +53,6 @@ export const db = {
           password: authData.encrypted_password,
           name: userData.name,
           role: userData.role,
-          emailVerified: userData.email_verified || false,
-          emailVerifiedAt: userData.email_verified_at ? new Date(userData.email_verified_at) : undefined,
           createdAt: new Date(userData.created_at),
           lastLogin: userData.last_login ? new Date(userData.last_login) : undefined,
         };
@@ -105,8 +90,6 @@ export const db = {
           password: authData.encrypted_password,
           name: userData.name,
           role: userData.role,
-          emailVerified: userData.email_verified || false,
-          emailVerifiedAt: userData.email_verified_at ? new Date(userData.email_verified_at) : undefined,
           createdAt: new Date(userData.created_at),
           lastLogin: userData.last_login ? new Date(userData.last_login) : undefined,
         };
@@ -160,7 +143,7 @@ export const db = {
           password: userData.password,
           name: userData.name,
           role: userData.role,
-          emailVerified: false,
+
           createdAt: new Date(now),
         };
       } catch (error) {
@@ -184,25 +167,7 @@ export const db = {
       }
     },
 
-    verifyEmail: async (id: string): Promise<void> => {
-      try {
-        const { error } = await supabase
-          .from('users')
-          .update({ 
-            email_verified: true,
-            email_verified_at: new Date().toISOString()
-          })
-          .eq('id', id);
 
-        if (error) {
-          console.error('Error verifying email:', error);
-          throw error;
-        }
-      } catch (error) {
-        console.error('Error verifying email:', error);
-        throw error;
-      }
-    },
     
     getAll: async (): Promise<UserResponse[]> => {
       try {
@@ -221,8 +186,7 @@ export const db = {
           email: user.email,
           name: user.name,
           role: user.role,
-          emailVerified: user.email_verified || false,
-          emailVerifiedAt: user.email_verified_at ? new Date(user.email_verified_at) : undefined,
+
           createdAt: new Date(user.created_at),
           lastLogin: user.last_login ? new Date(user.last_login) : undefined,
         }));
@@ -233,82 +197,4 @@ export const db = {
     }
   },
 
-  // Email verification operations
-  emailVerification: {
-    createToken: async (userId: string, token: string, expiresAt: Date): Promise<void> => {
-      try {
-        const { error } = await supabase
-          .from('email_verification_tokens')
-          .insert({
-            user_id: userId,
-            token: token,
-            expires_at: expiresAt.toISOString(),
-          });
-
-        if (error) {
-          console.error('Error creating verification token:', error);
-          throw error;
-        }
-      } catch (error) {
-        console.error('Error creating verification token:', error);
-        throw error;
-      }
-    },
-
-    findByToken: async (token: string): Promise<EmailVerificationToken | null> => {
-      try {
-        const { data, error } = await supabase
-          .from('email_verification_tokens')
-          .select('*')
-          .eq('token', token)
-          .single();
-
-        if (error || !data) {
-          return null;
-        }
-
-        return {
-          id: data.id,
-          userId: data.user_id,
-          token: data.token,
-          expiresAt: new Date(data.expires_at),
-          createdAt: new Date(data.created_at),
-          usedAt: data.used_at ? new Date(data.used_at) : undefined,
-        };
-      } catch (error) {
-        console.error('Error finding verification token:', error);
-        return null;
-      }
-    },
-
-    markAsUsed: async (tokenId: string): Promise<void> => {
-      try {
-        const { error } = await supabase
-          .from('email_verification_tokens')
-          .update({ used_at: new Date().toISOString() })
-          .eq('id', tokenId);
-
-        if (error) {
-          console.error('Error marking token as used:', error);
-          throw error;
-        }
-      } catch (error) {
-        console.error('Error marking token as used:', error);
-        throw error;
-      }
-    },
-
-    cleanupExpired: async (): Promise<void> => {
-      try {
-        const { error } = await supabase
-          .rpc('cleanup_expired_verification_tokens');
-
-        if (error) {
-          console.error('Error cleaning up expired tokens:', error);
-        }
-      } catch (error) {
-        console.error('Error cleaning up expired tokens:', error);
-      }
-    }
-  }
 }; 

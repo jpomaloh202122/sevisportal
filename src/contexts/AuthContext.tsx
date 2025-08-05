@@ -7,8 +7,6 @@ interface User {
   email: string;
   name: string;
   role: 'citizen' | 'admin' | 'staff';
-  emailVerified: boolean;
-  emailVerifiedAt?: Date;
   createdAt: Date;
   lastLogin?: Date;
 }
@@ -16,7 +14,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<{ success: boolean; error?: string; requiresVerification?: boolean }>;
+  signIn: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   signUp: (email: string, password: string, name: string, role?: string) => Promise<{ success: boolean; error?: string }>;
   signOut: () => void;
   isAuthenticated: boolean;
@@ -80,8 +78,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else {
         return { 
           success: false, 
-          error: data.error,
-          requiresVerification: data.requiresVerification
+          error: data.error
         };
       }
     } catch (error) {
@@ -103,7 +100,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const data = await response.json();
 
       if (response.ok) {
-        // Don't automatically sign in for signup - user needs to verify email first
+        // Automatically sign in after successful signup
+        localStorage.setItem('authToken', data.token);
+        setUser(data.user);
         return { success: true };
       } else {
         return { success: false, error: data.error };
