@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     await db.users.verifyEmail(user.id);
 
     // Generate JWT token for automatic login
-    const token = auth.generateToken(user);
+    const jwtToken = auth.generateToken(user);
 
     // Create response with user data
     const userResponse = {
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       message: 'Email verified successfully',
       user: userResponse,
-      token,
+      token: jwtToken,
     });
 
   } catch (error) {

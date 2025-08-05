@@ -1,18 +1,26 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { CheckCircle, XCircle, Mail, RefreshCw } from 'lucide-react';
 
-export default function VerifyEmailPage() {
+function VerifyEmailPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { signIn } = useAuth();
   
   const [status, setStatus] = useState<'loading' | 'success' | 'error' | 'expired' | 'used'>('loading');
   const [message, setMessage] = useState('');
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<{
+    id: string;
+    email: string;
+    name: string;
+    role: string;
+    emailVerified: boolean;
+    createdAt: string;
+  } | null>(null);
   const [isResending, setIsResending] = useState(false);
 
   const token = searchParams.get('token');
@@ -184,5 +192,13 @@ export default function VerifyEmailPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <VerifyEmailPage />
+    </Suspense>
   );
 } 

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Mail, CheckCircle, XCircle, RefreshCw } from 'lucide-react';
 
 export default function TestEmailVerificationPage() {
-  const [testResults, setTestResults] = useState<any[]>([]);
+  const [testResults, setTestResults] = useState<Array<{name: string; status: string; message: string}>>([]);
   const [loading, setLoading] = useState(false);
 
   const runTests = async () => {
@@ -132,7 +132,7 @@ export default function TestEmailVerificationPage() {
               <li>Sign up with a new email address</li>
               <li>Check the console for the mock verification email</li>
               <li>Click the verification link or copy the token</li>
-              <li>Verify that you're automatically signed in</li>
+              <li>Verify that you&apos;re automatically signed in</li>
               <li>Test the resend verification functionality</li>
             </ol>
           </div>
@@ -141,7 +141,7 @@ export default function TestEmailVerificationPage() {
             <h3 className="font-medium text-yellow-900 mb-2">Development Mode</h3>
             <p className="text-sm text-yellow-800">
               In development mode, emails are logged to the console instead of being sent. 
-              Check your browser's developer console to see the verification emails.
+              Check your browser&apos;s developer console to see the verification emails.
             </p>
           </div>
         </div>

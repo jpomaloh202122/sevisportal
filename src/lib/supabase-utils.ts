@@ -173,7 +173,7 @@ export const supabaseUtils = {
   },
 
   // Bulk operations (for admin)
-  bulkUpdateUsers: async (userIds: string[], updates: any) => {
+  bulkUpdateUsers: async (userIds: string[], updates: Record<string, unknown>) => {
     try {
       const { data, error } = await supabase
         .from('users')

@@ -3,7 +3,20 @@
 import { useState } from 'react';
 
 export default function TestSupabasePage() {
-  const [testResult, setTestResult] = useState<any>(null);
+  const [testResult, setTestResult] = useState<{
+    success: boolean;
+    message?: string;
+    error?: string;
+    details?: string;
+    data?: {
+      connection?: string;
+      usersTable?: string;
+      authUsersTable?: string;
+      userStatsView?: string;
+      sampleUsers?: unknown[];
+      stats?: unknown[];
+    };
+  } | null>(null);
   const [loading, setLoading] = useState(false);
 
   const runTest = async () => {

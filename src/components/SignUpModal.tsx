@@ -103,7 +103,7 @@ export default function SignUpModal({ isOpen, onClose, onSwitchToSignIn }: SignU
               Check Your Email
             </h3>
             <p className="text-gray-600 mb-4">
-              We've sent a verification link to <strong>{formData.email}</strong>
+              We&apos;ve sent a verification link to <strong>{formData.email}</strong>
             </p>
             <p className="text-sm text-gray-500 mb-6">
               Click the link in your email to verify your account and start using SEVIS Portal.
