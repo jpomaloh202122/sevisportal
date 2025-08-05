@@ -2,9 +2,7 @@ import {
   Home, 
   FileText, 
   Calculator, 
-  MapPin, 
   Building, 
-  CreditCard,
   ArrowLeft
 } from 'lucide-react';
 import Link from 'next/link';

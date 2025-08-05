@@ -2,21 +2,16 @@ import {
   Heart, 
   Stethoscope, 
   Pill, 
-  Calendar, 
   MapPin, 
   Phone, 
   Mail, 
-  ArrowLeft,
   CheckCircle,
   Clock,
-  User,
   FileText,
   Shield,
   Activity,
-  Globe,
-  Building2
+  Globe
 } from 'lucide-react';
-import Link from 'next/link';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 

@@ -1,5 +1,4 @@
 import { supabase } from './supabase';
-import bcrypt from 'bcryptjs';
 
 export interface User {
   id: string;
@@ -105,7 +104,7 @@ export const db = {
         const now = new Date().toISOString();
 
         // Insert into users table
-        const { data: userInsertData, error: userError } = await supabase
+        const { error: userError } = await supabase
           .from('users')
           .insert({
             id: userId,

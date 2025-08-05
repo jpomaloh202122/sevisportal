@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 export async function GET() {
   try {
     // Test 1: Basic connection test
-    const { data: connectionTest, error: connectionError } = await supabase
+    const { error: connectionError } = await supabase
       .from('users')
       .select('count')
       .limit(1);
@@ -46,7 +46,7 @@ export async function GET() {
     }
 
     // Test 4: Check user_stats view
-    const { data: stats, error: statsError } = await supabase
+    const { data: stats } = await supabase
       .from('user_stats')
       .select('*');
 

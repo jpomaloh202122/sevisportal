@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { X, Eye, EyeOff, User, Lock, Mail, UserCheck, CheckCircle } from 'lucide-react';
+import { X, Eye, EyeOff, Lock, Mail, UserCheck } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface SignUpModalProps {

@@ -4,23 +4,15 @@ import {
   Train, 
   Plane, 
   FileText, 
-  Calendar, 
   MapPin, 
   Phone, 
   Mail, 
-  ArrowLeft,
   CheckCircle,
   Clock,
-  User,
-  Shield,
-  Activity,
   Globe,
-  Building2,
   CreditCard,
-  AlertTriangle,
-  Map
+  AlertTriangle
 } from 'lucide-react';
-import Link from 'next/link';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 

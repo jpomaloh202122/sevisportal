@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
-import { Bell, ArrowLeft, User, LogOut, ChevronDown } from 'lucide-react';
+import Link from 'next/link';
+import { Bell, User, LogOut, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import SignInModal from './SignInModal';

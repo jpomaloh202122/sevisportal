@@ -37,7 +37,7 @@ export const auth = {
   verifyToken: (token: string): JWTPayload | null => {
     try {
       return jwt.verify(token, JWT_SECRET) as JWTPayload;
-    } catch (error) {
+    } catch {
       return null;
     }
   },
